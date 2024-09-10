@@ -55,17 +55,58 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// router.delete('/:id', async (req, res) => {
+//   // delete a category by its `id` value
+//   const categoryId = parseInt(req.params.id, 10);
+//   //links products associated with category id
+//   const linkedProducts = await Product.findAll({ where: { category_id: categoryId } });
+//   //if there are any products (more than 0), then delete products with category
+//   if (linkedProducts.length > 0) {
+//     await Product.destroy({ where: { category_id: categoryId } });
+//   }
+//   try {
+//     const deletedCategory = await Category.destroy({
+//       where: {
+//         id: categoryId
+//       }
+//     });
+//     res.status(200).json({ message: 'Category deleted successfully'});
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+
 router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
+  //finds category id
+  const categoryId = parseInt(req.params.id, 10);
+  //if category id isn't a number, return error
+  if (isNaN(categoryId)) {
+    return res.status(400).json({ message: 'Invalid category ID'});
+  }
+
   try {
-    const deletedCategory = await Category.destroy({
-      where: {
-        id: req.params.id
-      }
-    })
-    res.status(200).json(deletedCategory);
+  //links products associated with category id
+  const linkedProducts = await Product.findAll({ where: { category_id: categoryId } });
+  //if there are any products (more than 0), then delete products with category
+  if (linkedProducts.length > 0) {
+    await Product.destroy({ where: { category_id: categoryId } });
+  }
+  //variable for items to delete
+  const deleted = await Category.destroy({
+    where: { id: categoryId }
+  });
+
+    //if the item doesn't exist, error
+    if (deleted === 0) {
+      return res.status(404).json({ message: 'Category not found'});
+    }
+    //if it does exist, it deletes
+    res.status(200).json({ message: 'Category deleted successfully'});
   } catch (err) {
-    res.status(500).json(err);
+      //errors if it can't delete
+      console.error('Error deleting category:', err);
+      res.status(500).json({ message: 'Failed to delete category', error: err.message});
   }
 });
 

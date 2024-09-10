@@ -4,32 +4,34 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // The `/api/products` endpoint
 
 // get all products
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
   try {
-    const allProducts = await Product.findAll({ include: [
-      { model: Category },
+    const Products = await Product.findAll({ include: [
       { model: Tag }
     ]});
-    res.status(200).json(allProducts);
+    res.status(200).json(Products);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
   try {
-    const productData = await Product.findByPk(req.params.id, {include: [
-      { model:Category},
-      { model:Tag},
-    ]});
-    res.status(200).json(productData);
-  }catch (err) {
-    res.status(500).json(err);
+    const productId = parseInt(req.params.id, 10);
+    const product = await Product.findOne({
+      where: { id: productId },
+    });
+    //return
+    res.status(200).json(product);
+  } catch (error) {
+    //if fail
+    console.error(error);
+    res.status(500).json({ message: 'Failed to find product'});
   }
 });
 
@@ -54,7 +56,7 @@ router.post('/', (req, res) => {
         });
         return ProductTag.bulkCreate(productTagIdArr);
       }
-     
+     // if none (product tag)
       res.status(200).json(product);
     })
     .then((productTagIds) => res.status(200).json(productTagIds))
@@ -65,7 +67,7 @@ router.post('/', (req, res) => {
 });
 
 // update product
-router.put('/:id', async (req, res) => {
+router.put('/:id', (req, res) => {
   // update data
   Product.update(req.body, {
     where: {
@@ -112,9 +114,9 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   // delete one product 
   try {
-    const deletedProduct= await Product.destory({
+    const deletedProduct= await Product.destroy({
       where: {
-        id:req.params.id
+        id: req.params.id
       }
     })
     res.status(200).json(deletedProduct);
