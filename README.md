@@ -21,4 +21,4 @@ I couldnt figure out why it worked for tags and not those.
 Github: https://github.com/MommaDLP/E-commerce-Back-End
 
 ## Images
-<src img="image\Screenshot 2024-09-10 165528.png" alt="insomnia"/>
+<img src="image\Screenshot 2024-09-10 165528.png" alt="insomnia photo"/>
