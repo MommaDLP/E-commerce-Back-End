@@ -5,10 +5,10 @@ the back end for an e-commerce site, working Express.js API and configure it to 
 
 ## Installation
 - npm i<br>
--npm run start<br>
+- npm run start<br>
 
 ## Usage
--node index.js
+- node index.js
 - Insomnia GET, POST, PUT,and DELETE
 
 ## License
@@ -21,4 +21,4 @@ I couldnt figure out why it worked for tags and not those.
 Github: https://github.com/MommaDLP/E-commerce-Back-End
 
 ## Images
-<src img="C:\Users\miran\OneDrive\desktop\E-commerce-Back-End\image\Screenshot 2024-09-10 165528.png" alt="insomnia"/>
+<src img="image\Screenshot 2024-09-10 165528.png" alt="insomnia"/>
